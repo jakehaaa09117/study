@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>스터디 로그</title>
+<style>
+:root{--bg:#f2f2f7;--card:#fff;--text:#1c1c1e;--sub:#8e8e93;--line:#e5e5ea;--blue:#2457c5;--tabbg:rgba(190,190,195,.55);--pill:rgba(120,120,128,.28);--glass:rgba(120,120,128,.1);--shadow:0 1px 2px rgba(0,0,0,.04),0 10px 30px rgba(0,0,0,.06);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--card:#1c1c1e;--text:#f5f5f7;--sub:#98989f;--line:#38383a;--blue:#5e8cff;--tabbg:rgba(60,60,64,.6);--pill:rgba(150,150,160,.3);--glass:rgba(150,150,160,.14);--shadow:none}}
+:root[data-theme="dark"]{--bg:#000;--card:#1c1c1e;--text:#f5f5f7;--sub:#98989f;--line:#38383a;--blue:#5e8cff;--tabbg:rgba(60,60,64,.6);--pill:rgba(150,150,160,.3);--glass:rgba(150,150,160,.14);--shadow:none}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Apple SD Gothic Neo","Noto Sans KR",sans-serif;-webkit-font-smoothing:antialiased}
+main{max-width:1180px;margin:0 auto;padding:28px 40px 160px}
+section{display:none;animation:in .35s ease}section.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;gap:16px;flex-wrap:wrap}
+h1{font-size:40px;letter-spacing:-.025em;margin:0;font-weight:700}
+.date{color:var(--sub);font-size:17px;margin-top:4px}
+.dday{text-align:right}
+.dday span{font-size:13px;color:var(--sub)}.dday b{display:block;font-size:34px;color:var(--blue);letter-spacing:-.02em;line-height:1.1}
+.g{display:grid;gap:24px;margin-bottom:24px}.g2{grid-template-columns:1.45fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.gc{grid-template-columns:1.3fr 1fr}
+.card{background:var(--card);border-radius:26px;padding:28px;box-shadow:var(--shadow)}
+.card h2{font-size:15px;margin:0 0 16px;color:var(--sub);font-weight:600}
+.stack>*+*{margin-top:20px}.gc .stack{display:flex;flex-direction:column;gap:20px}.gc .stack>*+*{margin-top:0}.gc .stack>.card{flex:1;display:flex;flex-direction:column;justify-content:center}
+.donutwrap{display:flex;align-items:center;gap:36px}.donutwrap svg{flex:0 0 300px;width:300px}
+.ls{flex:1}.ls div{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line);font-size:17px}.ls div:last-child{border:0}
+.ls i,.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:10px}.ls small{color:var(--sub);margin-left:10px;font-size:14px}
+.ring{position:relative;width:170px;height:170px;margin:0 auto}.ring svg{transform:rotate(-90deg)}
+.ring .c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.big{font-size:40px;font-weight:700;letter-spacing:-.025em}.small{font-size:13px;color:var(--sub);margin-top:2px}
+.row{display:flex;gap:14px}.row>*{flex:1}
+.stat{background:var(--card);border-radius:20px;padding:16px 14px;box-shadow:var(--shadow)}.stat span{font-size:13px;color:var(--sub)}.stat b{display:block;font-size:18px;margin-top:6px;letter-spacing:-.01em;white-space:nowrap}
+.btn{display:block;width:100%;border:0;border-radius:16px;padding:16px;font-size:17px;font-weight:600;background:var(--blue);color:#fff;cursor:pointer;font-family:inherit}.btn:active{transform:scale(.98)}
+.btn.ghost{background:var(--glass);color:var(--text)}
+.wk{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.wk b{font-size:17px}
+.wk button{border:0;background:var(--glass);color:var(--blue);width:36px;height:36px;border-radius:50%;font-size:20px;cursor:pointer}.wk button:disabled{opacity:.3}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:12px;font-size:13px;color:var(--sub)}
+svg text{fill:var(--sub);font-size:11px;font-family:inherit}svg text.ct{fill:var(--text);font-size:26px;font-weight:700}svg text.cs{font-size:12px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal .h{text-align:center;font-size:12px;color:var(--sub);padding-bottom:4px}
+.cal button{border:0;background:var(--glass);border-radius:14px;min-height:100px;padding:12px;text-align:left;font-family:inherit;color:var(--text);cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;transition:transform .15s,background .2s}
+.cal button:active{transform:scale(.96)}.cal button:disabled{opacity:.3;cursor:default}.cal button.e{visibility:hidden}
+.cal button.t{background:color-mix(in srgb,var(--blue) 18%,transparent);box-shadow:inset 0 0 0 2px var(--blue)}
+.cal b{font-size:16px}.cal .bt{font-size:12px}.cal .bt svg{width:12px;height:12px;vertical-align:-2px;margin-right:3px;color:var(--sub)}.cal small{font-size:14px;color:var(--sub);line-height:1.6}
+.cal .mb{display:flex;height:5px;border-radius:3px;overflow:hidden;background:var(--line);margin-top:4px}
+.field{display:flex;justify-content:space-between;align-items:center;padding:10px 0;font-size:17px}
+.field label i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:10px}
+.field input{border:0;outline:0;background:var(--glass);color:var(--text);border-radius:14px;padding:11px 14px;font-size:18px;font-family:inherit;text-align:center;transition:box-shadow .2s,background .2s;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.field input:focus{box-shadow:0 0 0 2px var(--blue);background:transparent}
+.field input[type=number]{width:72px}.field input[type=time],.field input[type=date]{min-width:140px}
+.field u{text-decoration:none;color:var(--sub);font-size:15px;margin:0 12px 0 6px}.tm{display:flex;align-items:center}
+.hint{font-size:12px;color:var(--sub)}
+.more{border:0;background:none;color:var(--sub);font-family:inherit;font-size:15px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;padding:16px 0 8px}.more svg{width:16px;height:16px;transition:transform .25s}.more.o svg{transform:rotate(180deg)}#lrs svg,#rs svg{width:20px;height:20px}
+.ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.ch h2{margin:0}.rst{border:0;background:none;color:var(--sub);cursor:pointer;padding:6px;margin:-6px;display:flex}.rst svg{width:20px;height:20px}.rst:active{opacity:.5}
+#home .stat{padding:28px;border-radius:26px}#home .stat span{display:block;font-size:15px;font-weight:600;margin-bottom:6px}
+main{padding:40px 52px 180px}.g{gap:30px;margin-bottom:30px}.gc .stack{gap:30px}#home .stack>*+*{margin-top:30px}.field{padding:15px 0}.sheet .card{padding:38px}.cal{gap:10px}
+.ls div,.ls span,.stat,.stat span,.stat b,.card h2,.field label,.legend span,nav button,.btn,.more,.pk,.dday,.date,.big,.cal b,.cal small,.cal .bt,.wk b,h1{white-space:nowrap}.stat{min-width:0}.cal button{overflow:hidden;min-width:0}#cft,#cfs{white-space:nowrap}#cft{font-size:20px;margin-bottom:10px}
+.pk{position:relative;display:inline-flex;align-items:center;gap:10px;background:var(--glass);border-radius:14px;padding:10px 16px;font-size:17px;cursor:pointer;transition:background .2s,transform .15s;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.pk:active{transform:scale(.97)}.pk svg{width:20px;height:20px;color:var(--blue);flex:none}.pk .v{min-width:64px;text-align:center}
+.field .pk input{position:absolute;inset:0;width:100%;height:100%;min-width:0;padding:0;opacity:0;cursor:pointer}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.35);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:30;padding:20px}
+.sheet.on{display:flex}.sheet .card{width:min(560px,100%);max-height:90vh;overflow:auto;animation:in .3s}
+.sheet h3{margin:0 0 8px;font-size:22px}
+.toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 16px);transform:translate(-50%,-90px);background:var(--text);color:var(--bg);padding:12px 22px;border-radius:99px;font-size:15px;transition:transform .35s;z-index:40}.toast.on{transform:translate(-50%,0)}
+nav{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);transform:translateX(-50%);width:min(440px,calc(100% - 32px));height:84px;border-radius:99px;background:var(--tabbg);-webkit-backdrop-filter:blur(28px) saturate(1.6);backdrop-filter:blur(28px) saturate(1.6);padding:7px;display:flex;box-shadow:0 10px 36px rgba(0,0,0,.2),inset 0 0 0 1px rgba(255,255,255,.35);z-index:10}
+nav .pill{position:absolute;top:7px;bottom:7px;left:7px;width:calc((100% - 14px)/3);border-radius:99px;background:var(--pill);transition:transform .4s cubic-bezier(.3,1.3,.5,1)}
+nav button{position:relative;flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;font-family:inherit}
+nav button.on{color:var(--blue)}nav svg{width:28px;height:28px;fill:currentColor}
+@media (max-width:820px){main{padding:20px 16px 160px}.g2,.g3,.gc{grid-template-columns:1fr}.donutwrap{flex-direction:column}.donutwrap svg{width:240px;flex-basis:auto}.ls{width:100%}.cal button{min-height:60px;padding:5px}.cal small{display:none}}
+</style>
+</head>
+<body>
+<main>
+<section id="home" class="on">
+<div class="top"><div><h1>오늘</h1><div class="date" id="today"></div></div><div class="dday"><span>2028 수능 · 2027.11.18</span><b id="dd"></b></div></div>
+<div class="g g2">
+<div class="card"><h2>이번 주 과목별 학습 비율</h2><div class="donutwrap"><div id="hd" style="display:contents"></div><div class="ls" id="hl"></div></div></div>
+<div class="stack">
+<div class="card"><h2>오늘</h2><div class="big" id="tt"></div></div>
+<div class="row"><div class="stat"><span>이번 주 합계</span><b id="wkTot"></b></div><div class="stat"><span>주 평균 대비</span><b id="diff"></b></div></div>
+<div class="card"><h2>최근 7일</h2><div id="mini"></div></div>
+</div></div>
+</section>
+
+<section id="log">
+
+<div class="g g2" style="grid-template-columns:1fr 1.3fr">
+<div class="card"><div class="ch"><h2>수면 시간</h2><button class="rst" id="lrs" aria-label="수면 시간 초기화" title="수면 시간 초기화"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/></svg></button></div><div class="field"><label>날짜</label><div class="pk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span class="v"></span><input type="date" id="d"></div></div><div id="lsl"></div></div>
+<div class="card"><div class="ch"><h2>과목별 학습 시간</h2><button class="rst" id="lrb" aria-label="과목별 학습 시간 초기화" title="과목별 학습 시간 초기화"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/></svg></button></div><div id="lsb"></div><button class="btn" id="save" style="width:auto;display:block;margin:20px auto 0;padding:13px 44px">저장</button></div></div>
+
+</section>
+
+<section id="stats">
+
+<div class="g gc">
+<div class="card"><div class="wk"><button id="cp">‹</button><b id="cl"></b><button id="cn">›</button></div><div class="cal" id="cal"></div></div>
+<div class="stack">
+<div class="wk" style="margin:0"><button id="pv">‹</button><b id="wl"></b><button id="nx">›</button></div>
+<div class="row"><div class="stat"><span>주간 합계</span><b id="s1"></b></div><div class="stat"><span>일 평균</span><b id="s2"></b></div><div class="stat"><span>평균 수면</span><b id="s3"></b></div></div>
+<div class="card"><h2>과목별 학습 비율</h2><div id="sd" style="display:flex;justify-content:center"></div><div class="ls" id="lg" style="width:100%;margin-top:16px"></div></div>
+</div></div>
+<div class="g g3">
+<div class="card"><h2>과목 학습 시간 추이</h2><div id="bars"></div></div>
+<div class="card"><h2>학습 시간 추이</h2><div id="line"></div></div>
+<div class="card"><h2>평균 수면 시간 추이</h2><div id="sleep"></div><div class="small" id="sl2" style="margin-top:8px"></div></div>
+</div>
+</section>
+</main>
+
+<div class="sheet" id="sheet"><div class="card"><h3 id="sh"></h3><div id="msl"></div><button class="more" id="rs" aria-label="수면 시간 초기화" title="수면 시간 초기화" style="padding:4px 0 0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/></svg></button><button class="more" id="mo"><span>더보기</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button><div id="msb" hidden></div><div class="row" style="margin-top:16px"><button class="btn ghost" id="sc">닫기</button><button class="btn" id="ss">저장</button></div></div></div>
+<div class="sheet" id="cf"><div class="card" style="width:min(460px,100%)"><h3 id="cft"></h3><div class="small" id="cfs" style="margin-bottom:24px"></div><div class="row"><button class="btn ghost" id="cfn">취소</button><button class="btn" id="cfy" style="background:#ff3b30">초기화</button></div></div></div>
+<div class="toast" id="toast">저장되었어요</div>
+<nav><div class="pill" id="pl"></div>
+<button data-t="home"><svg viewBox="0 0 24 24"><path d="M12 3 2.5 11.2c-.4.4-.1 1 .4 1H5v7.3c0 .8.7 1.5 1.5 1.5H10v-5h4v5h3.5c.8 0 1.5-.7 1.5-1.5v-7.3h2.1c.5 0 .8-.6.4-1z"/></svg>홈</button>
+<button data-t="log"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4z"/></svg>기록</button>
+<button data-t="stats"><svg viewBox="0 0 24 24"><rect x="3" y="12" width="4.5" height="9" rx="1.5"/><rect x="9.8" y="4" width="4.5" height="17" rx="1.5"/><rect x="16.5" y="9" width="4.5" height="12" rx="1.5"/></svg>분석</button></nav>
+
+<script>
+const SUB=[["국어영역","#0A3D91"],["수학영역","#0A66D9"],["영어영역","#2F8CFF"],["통합사회","#6DB0FF"],["통합과학","#A9D1FF"]];
+const DN=["일","월","화","수","목","금","토"],KEY="studylog.v2";
+const $=id=>document.getElementById(id);
+const ymd=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const add=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const mon=d=>add(d,-((d.getDay()+6)%7));
+const fmt=m=>{m=Math.round(m);const h=Math.floor(m/60),r=m%60;return h?(r?h+"시간 "+r+"분":h+"시간"):r+"분"};
+const tot=e=>e?Object.values(e.s).reduce((a,b)=>a+b,0):0;
+const toMin=t=>{const[a,b]=t.split(":").map(Number);return a*60+b};
+const hm=m=>String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0");
+const sleepMin=e=>e&&e.wake&&e.bed?(toMin(e.wake)+1440-toMin(e.bed))%1440:null;
+const TODAY=new Date();TODAY.setHours(12,0,0,0);let data={};
+try{data=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){data={}}
+const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}};
+const get=d=>data[ymd(d)];
+function toast(m){const t=$("toast");t.textContent=m||"저장되었어요";t.classList.add("on");setTimeout(()=>t.classList.remove("on"),1600)}
+
+const IC={cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',sun:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',moon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 13.5A9 9 0 1 1 10.5 3a7 7 0 0 0 10.5 10.5z"/></svg>'};
+/* editor (shared by 기록 tab and the calendar sheet) */
+function edHTML(p){
+$(p+"sl").innerHTML=`<div class="field"><label>기상 시간</label><div class="pk">${IC.sun}<span class="v"></span><input type="time" id="${p}wk"></div></div><div class="field"><label>취침 시간</label><div class="pk">${IC.moon}<span class="v"></span><input type="time" id="${p}bd"></div></div>`;
+$(p+"sb").innerHTML=SUB.map(([n,c],i)=>`<div class="field"><label><i style="background:${c}"></i>${n}</label><span class="tm"><input type="number" min="0" max="24" inputmode="numeric" placeholder="0" id="${p}h${i}"><u>시간</u><input type="number" min="0" max="59" step="5" inputmode="numeric" placeholder="0" id="${p}m${i}"><u>분</u></span></div>`).join("")}
+function edLoad(p,ds){const e=data[ds];SUB.forEach(([n],i)=>{const v=e&&e.s[n]||0;$(p+"h"+i).value=v?Math.floor(v/60):"";$(p+"m"+i).value=v?v%60:""});
+$(p+"wk").value=e&&e.wake||"";$(p+"bd").value=e&&e.bed||"";pk()}
+function edSave(p,ds){const s={};SUB.forEach(([n],i)=>{s[n]=Math.max(0,Math.min(1440,(parseInt($(p+"h"+i).value)||0)*60+(parseInt($(p+"m"+i).value)||0)))});data[ds]={s,wake:$(p+"wk").value,bed:$(p+"bd").value};persist()}
+edHTML("l");edHTML("m");
+
+function pk(){document.querySelectorAll(".pk input").forEach(i=>{const v=i.parentNode.querySelector(".v");let t=i.value;if(i.type==="date"&&t){const d=new Date(t+"T12:00");t=(d.getMonth()+1)+"월 "+d.getDate()+"일 "+DN[d.getDay()]}else if(t){const[h,m]=t.split(":").map(Number);t=(h<12?"오전 ":"오후 ")+(h%12||12)+":"+String(m).padStart(2,"0")}v.textContent=t||"선택"})}
+document.addEventListener("change",pk);document.addEventListener("input",pk);
+document.addEventListener("click",e=>{const i=e.target.closest&&e.target.closest(".pk input");if(i&&i.showPicker){try{i.showPicker()}catch(_){}}});
+/* tabs */
+const tabs=["home","log","stats"];
+function go(t){if(!tabs.includes(t))t="home";tabs.forEach(x=>$(x).classList.toggle("on",x===t));
+document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.t===t));
+$("pl").style.transform="translateX("+tabs.indexOf(t)*100+"%)";
+try{history.replaceState(null,"","#"+t)}catch(e){}
+window.scrollTo(0,0);if(t==="home")home();if(t==="stats")stats();if(t==="log")edLoad("l",$("d").value)}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>go(b.dataset.t));
+window.addEventListener("hashchange",()=>go(location.hash.slice(1)));
+
+/* donut */
+function donut(by,sum,size){let s=`<svg viewBox="0 0 200 200" width="${size}"><g transform="rotate(-90 100 100)"><circle cx="100" cy="100" r="76" fill="none" stroke="var(--line)" stroke-width="26"/>`,acc=0;const C=477.5;
+by.forEach((v,i)=>{if(!sum||!v)return;const L=v/sum*C;s+=`<circle cx="100" cy="100" r="76" fill="none" stroke="${SUB[i][1]}" stroke-width="26" stroke-dasharray="${Math.max(0,L-2.5)} ${C}" stroke-dashoffset="${-acc}"/>`;acc+=L});
+return s+`</g><text class="ct" x="100" y="${sum%60?98:108}" text-anchor="middle">${Math.floor(sum/60)}시간</text>${sum%60?`<text class="cs" x="100" y="122" text-anchor="middle">${sum%60}분</text>`:""}</svg>`}
+const wkBy=days=>SUB.map(([n])=>days.reduce((a,d)=>a+(d<=TODAY&&get(d)?get(d).s[n]||0:0),0));
+
+/* home */
+function home(){
+$("today").textContent=TODAY.getFullYear()+"년 "+(TODAY.getMonth()+1)+"월 "+TODAY.getDate()+"일 "+DN[TODAY.getDay()]+"요일";
+const n=Math.round((new Date(2027,10,18,12)-TODAY)/864e5);$("dd").textContent=n>0?"D-"+n:n===0?"D-DAY":"D+"+(-n);
+const days=week(0),by=wkBy(days),sum=by.reduce((a,b)=>a+b,0);
+$("hd").innerHTML=donut(by,sum,300);
+$("hl").innerHTML=SUB.map(([nm,c],i)=>`<div><span><i style="background:${c}"></i>${nm}</span><span><b>${sum?Math.round(by[i]/sum*100):0}%</b><small>${fmt(by[i])}</small></span></div>`).join("");
+const t=tot(get(TODAY));$("tt").textContent=fmt(t);
+$("wkTot").textContent=fmt(sum);const pd=days.filter(d=>d<TODAY&&get(d));const av=pd.length?pd.reduce((a,d)=>a+tot(get(d)),0)/pd.length:null;const df=av===null?null:t-av;$("diff").textContent=df===null?"-":(df>=0?"+":"−")+fmt(Math.abs(df));
+const v=[];for(let i=6;i>=0;i--){const d=add(TODAY,-i);v.push([DN[d.getDay()],tot(get(d)),i===0])}
+const mx=Math.max(60,...v.map(x=>x[1]));let h='<svg viewBox="0 0 320 110" width="100%">';
+v.forEach((x,i)=>{const bh=Math.max(4,x[1]/mx*78),X=i*46+8;h+=`<rect x="${X}" y="${86-bh}" width="30" height="${bh}" rx="8" fill="${x[2]?"var(--blue)":"var(--line)"}"/><text x="${X+15}" y="103" text-anchor="middle">${x[0]}</text>`});
+$("mini").innerHTML=h+"</svg>"}
+
+/* stats */
+let off=0,cm=new Date(TODAY.getFullYear(),TODAY.getMonth(),1),cur="";
+const week=o=>{const s=add(mon(TODAY),o*7);return Array.from({length:7},(_,i)=>add(s,i))};
+$("pv").onclick=()=>{off--;stats()};$("nx").onclick=()=>{off++;stats()};
+$("cp").onclick=()=>{cm=new Date(cm.getFullYear(),cm.getMonth()-1,1);calendar()};
+$("cn").onclick=()=>{cm=new Date(cm.getFullYear(),cm.getMonth()+1,1);calendar()};
+function calendar(){
+$("cl").textContent=cm.getFullYear()+"년 "+(cm.getMonth()+1)+"월";$("cn").disabled=cm.getFullYear()*12+cm.getMonth()>=TODAY.getFullYear()*12+TODAY.getMonth();
+let h=["월","화","수","목","금","토","일"].map(x=>`<div class="h">${x}</div>`).join("");
+const first=(cm.getDay()+6)%7||0,f=new Date(cm.getFullYear(),cm.getMonth(),1,12),lead=(f.getDay()+6)%7,nd=new Date(cm.getFullYear(),cm.getMonth()+1,0).getDate();
+for(let i=0;i<lead;i++)h+='<button class="e" disabled></button>';
+for(let k=1;k<=nd;k++){const d=new Date(cm.getFullYear(),cm.getMonth(),k,12),e=get(d),T=tot(e),fut=d>TODAY;
+
+h+=`<button data-d="${ymd(d)}" class="${ymd(d)===ymd(TODAY)?"t":""}" ${fut?"disabled":""}><div><b>${k}</b><br><small>${T?Math.floor(T/60)+":"+String(T%60).padStart(2,"0"):""}</small></div><small class="bt">${e&&e.bed?IC.moon+" "+e.bed:""}</small></button>`}
+$("cal").innerHTML=h;
+$("cal").querySelectorAll("button[data-d]").forEach(b=>b.onclick=()=>{cur=b.dataset.d;const d=new Date(cur+"T12:00");$("sh").textContent=(d.getMonth()+1)+"월 "+d.getDate()+"일 "+DN[d.getDay()]+"요일";edLoad("m",cur);$("msb").hidden=true;$("mo").classList.remove("o");$("mo").firstChild.textContent="더보기";$("sheet").classList.add("on")})}
+let cfFn=null;
+function ask(t,fn){const m=t.match(/^(\d+월 \d+일) (.*)$/);$("cft").textContent=m?m[2]:t;$("cfs").textContent=(m?m[1]+" · ":"")+"저장된 기록이 삭제되며 되돌릴 수 없어요.";cfFn=fn;$("cf").classList.add("on")}
+$("cfn").onclick=()=>$("cf").classList.remove("on");
+$("cf").onclick=e=>{if(e.target.id==="cf")$("cf").classList.remove("on")};
+$("cfy").onclick=()=>{$("cf").classList.remove("on");if(cfFn)cfFn();cfFn=null};
+const dl=ds=>{const d=new Date(ds+"T12:00");return(d.getMonth()+1)+"월 "+d.getDate()+"일"};
+function wipe(ds,kind){const e=data[ds];if(e){if(kind==="sleep"){e.wake="";e.bed=""}else SUB.forEach(([n])=>e.s[n]=0);if(!tot(e)&&!e.wake&&!e.bed)delete data[ds];persist()}toast("초기화되었어요")}
+$("lrb").onclick=()=>{const ds=$("d").value;ask(dl(ds)+" 과목별 학습 기록을 초기화할까요?",()=>{wipe(ds,"s");SUB.forEach((_,i)=>{$("lh"+i).value="";$("lm"+i).value=""})})};
+$("lrs").onclick=()=>{const ds=$("d").value;ask(dl(ds)+" 수면 기록을 초기화할까요?",()=>{wipe(ds,"sleep");$("lwk").value="";$("lbd").value="";pk()})};
+$("rs").onclick=()=>{ask(dl(cur)+" 수면 기록을 초기화할까요?",()=>{wipe(cur,"sleep");$("mwk").value="";$("mbd").value="";pk();stats()})};
+$("mo").onclick=()=>{const h=$("msb").hidden;$("msb").hidden=!h;$("mo").classList.toggle("o",h);$("mo").firstChild.textContent=h?"접기":"더보기"};
+$("sc").onclick=()=>$("sheet").classList.remove("on");
+$("sheet").onclick=e=>{if(e.target.id==="sheet")$("sheet").classList.remove("on")};
+$("ss").onclick=()=>{edSave("m",cur);$("sheet").classList.remove("on");toast();stats()};
+function stats(){
+calendar();
+const days=week(off),prev=week(off-1);$("nx").disabled=off>=0;
+$("wl").textContent=(days[0].getMonth()+1)+"월 "+days[0].getDate()+"일 – "+(days[6].getMonth()+1)+"월 "+days[6].getDate()+"일";
+const valid=days.filter(d=>d<=TODAY&&get(d)),T=days.map(d=>tot(get(d))),sum=T.reduce((a,b)=>a+b,0);
+$("s1").textContent=fmt(sum);$("s2").textContent=valid.length?fmt(sum/valid.length):"-";
+const sl=days.map(d=>sleepMin(get(d))).filter(x=>x!==null);$("s3").textContent=sl.length?fmt(sl.reduce((a,b)=>a+b,0)/sl.length):"-";
+const by=wkBy(days);$("sd").innerHTML=donut(by,sum,200);
+$("lg").innerHTML=SUB.map(([n,c],i)=>`<div><span><i style="background:${c}"></i>${n}</span><span><b>${sum?Math.round(by[i]/sum*100):0}%</b><small>${fmt(by[i])}</small></span></div>`).join("");
+const W=Array.from({length:6},(_,i)=>week(off-5+i)),WL=W.map(w=>{const th=add(w[0],3);return[(th.getMonth()+1)+"월",Math.ceil(th.getDate()/7)+"주차"]});
+const WB=W.map(w=>SUB.map(([n])=>w.reduce((a,d)=>a+(d<=TODAY&&get(d)?get(d).s[n]||0:0),0))),WT=WB.map(v=>v.reduce((a,c)=>a+c,0));
+const WS=W.map(w=>{const a=w.map(d=>sleepMin(get(d))).filter(x=>x!==null);return a.length?a.reduce((x,y)=>x+y,0)/a.length:null});
+const mx=Math.max(600,...WT),cx=i=>i*46+45;
+const lab=i=>`<text x="${cx(i)}" y="158" text-anchor="middle">${WL[i][0]}</text><text x="${cx(i)}" y="171" text-anchor="middle">${WL[i][1]}</text>`;
+const grid=()=>[0,.5,1].map(f=>{const y=140-f*120;return `<line x1="0" x2="320" y1="${y}" y2="${y}" stroke="var(--line)"/><text x="0" y="${y-3}">${Math.round(mx*f/60)}h</text>`}).join("");
+let b='<svg viewBox="0 0 320 180" width="100%">'+grid();
+WB.forEach((v,i)=>{let y=140;v.forEach((m,k)=>{const h=m/mx*120;y-=h;b+=`<rect x="${cx(i)-15}" y="${y}" width="30" height="${Math.max(0,h-1)}" rx="3" fill="${SUB[k][1]}"/>`});b+=lab(i)});
+$("bars").innerHTML=b+"</svg>";
+const P=WT.map((t,i)=>[cx(i),140-t/mx*120]);let l='<svg viewBox="0 0 320 180" width="100%">'+grid();
+l+=`<path d="${P.map((q,i)=>(i?"L":"M")+q[0]+" "+q[1].toFixed(1)).join(" ")}" fill="none" stroke="var(--blue)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+P.forEach((q,i)=>{l+=`<circle cx="${q[0]}" cy="${q[1].toFixed(1)}" r="5" fill="var(--blue)"/>`;if(WT[i])l+=`<text x="${q[0]}" y="${(q[1]-11).toFixed(1)}" text-anchor="middle">${(WT[i]/60).toFixed(1)}h</text>`;l+=lab(i)});
+$("line").innerHTML=l+"</svg>";
+let s2='<svg viewBox="0 0 320 180" width="100%"><line x1="0" x2="320" y1="60" y2="60" stroke="var(--line)" stroke-dasharray="3 4"/><text x="0" y="56">8h</text>';
+WS.forEach((m,i)=>{if(m!==null){const H=m/600*100;s2+=`<rect x="${cx(i)-15}" y="${140-H}" width="30" height="${H}" rx="8" fill="#5E5CE6" opacity=".85"/><text x="${cx(i)}" y="${132-H}" text-anchor="middle">${(m/60).toFixed(1)}h</text>`}s2+=lab(i)});
+$("sleep").innerHTML=s2+"</svg>";
+const avg=(arr,wrap)=>{if(!arr.length)return"-";const m=arr.map(x=>{let v=toMin(x);if(wrap&&v<720)v+=1440;return v});return hm(Math.round(m.reduce((a,b)=>a+b,0)/m.length)%1440)};
+$("sl2").textContent=sl.length?"평균 기상 "+avg(valid.map(d=>get(d).wake).filter(Boolean))+" · 평균 취침 "+avg(valid.map(d=>get(d).bed).filter(Boolean),1):"기록이 없어요"}
+
+/* log tab */
+$("d").value=ymd(TODAY);$("d").max=ymd(TODAY);pk();$("d").onchange=()=>edLoad("l",$("d").value);
+$("save").onclick=()=>{edSave("l",$("d").value);toast();setTimeout(()=>go("home"),700)};
+go(location.hash.slice(1)||"home");
+</script>
+</body>
+</html>
